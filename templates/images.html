@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{%block content%}
+
+<ul>
+  {% for image in images %}
+      <li><img src="{{image.image.url}}"></li>
+  {% endfor %}
+  
+</ul>
+
+<a href="{% url 'home'  %}" class="btn btn-primary btn-md">Upload</a>
+{%endblock%}
