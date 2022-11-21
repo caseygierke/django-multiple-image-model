@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{%block content%}
+<form action="upload/" >
+    {% csrf_token %}
+        <select id="project" class="form-control" required>
+            <option value="">Select a project</option>
+                {% for project in projects %}
+                    <option value={{project.pk}}>{{project.name}}</option>
+                {% endfor %}
+        </select>
+        <br><br>
+        <div class="dropzone dz" id="uploadDropzone" >
+            <div class="fallback">
+                <input id="file" name="file" type="file" multiple />
+            </div>
+        </div>
+</form>
+<br><br>
+<button id="submit-upload btn" class="btn btn-success btn-sm" type="submit">Submit Form</button>
+
+<script>
+    var filename = "";
+
+    Dropzone.options.uploadDropzone = {
+        headers: {
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+    },
+        url: 'upload/',
+        paramName: "file",  // The name that will be used to transfer the file,
+        maxFilesize: 250,   // MB
+        autoProcessQueue: false,
+        accept: function(file, done) {
+            console.log(file.name);
+            filename = file.name;
+            done();    // !Very important
+        },
+        init: function() {
+            var myDropzone = this,
+            submitButton = document.querySelector("[type=submit]");
+
+            submitButton.addEventListener('click', function(e) {
+                var isValid = document.querySelector('#project').reportValidity();
+                e.preventDefault();
+                e.stopPropagation();
+                if (isValid)
+                    myDropzone.processQueue();
+            });
+
+            this.on('sending', function(data, xhr, formData) {
+                formData.append("project", jQuery("#project option:selected").val());
+            });
+        }
+    };
+</script>
+
+{%endblock%}

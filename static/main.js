@@ -4,4 +4,5 @@ const myDropzone= new Dropzone('#my-dropzone',{
     maxFiles:100,
     maxFilesize:2,
     acceptedFiles:'.jpg',
+    // autoProcessQueue:false,
 })

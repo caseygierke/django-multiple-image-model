@@ -9,18 +9,17 @@ class Project(models.Model):
     description = models.CharField(max_length=1000)
     event_date = models.DateTimeField(null=True, default=None)
     registration_deadline = models.DateTimeField(null=True, default=None)
-    pictures = models.FileField(blank=True)
     # status = models.ForeignKey(Status, null=True, on_delete=models.CASCADE)
     # Note, I used this link but am not using a view at this point https://docs.djangoproject.com/en/4.0/topics/class-based-views/generic-editing/
     # created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=datetime.now())
 
     def __str__(self):
-        return self.title
+        return self.name
 
 class Image(models.Model):
     project = models.ForeignKey(Project, default=None, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/')
+    picture = models.ImageField(upload_to='images/')
     date = models.DateTimeField( auto_now_add=True)
 
     class Meta:
